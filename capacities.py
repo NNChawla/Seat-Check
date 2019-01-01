@@ -1,6 +1,7 @@
+#Setup
+# =============================================================================
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 import os
 import time
 
@@ -8,8 +9,14 @@ chrome_options = Options()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--window-size=1920x1080")
 chrome_driver = os.getcwd() + "\\chromedriver.exe"
+# =============================================================================
 
+#Collecting Data
+# =============================================================================
 while True:
+    
+    #Logging In
+    # -------------------------------------------------------------------------
     driver = webdriver.Chrome(chrome_options=chrome_options, executable_path=chrome_driver)
 
     driver.get("https://my.olemiss.edu/irj/portal?NavigationTarget=navurl://03a271886019580e536eac4cd6d64f0e&role=Student&workset=Course%20Registration")
@@ -18,10 +25,16 @@ while True:
     password = driver.find_element_by_name('j_password').send_keys('password')
     submit = driver.find_element_by_xpath("//input[@type='submit']")
     submit.click()
-
+    # -------------------------------------------------------------------------
+    
+    #Accessing Favorites
+    # -------------------------------------------------------------------------
     driver.switch_to.frame('ivuFrm_page0ivu1')
     driver.switch_to.frame('isolatedWorkArea')
-
+    # -------------------------------------------------------------------------
+    
+    #Storing Capacities
+    # -------------------------------------------------------------------------
     while driver.find_elements_by_tag_name('select')==[]:
         pass
     """sleep is in case of network lag, elements needed some
@@ -48,23 +61,32 @@ while True:
     send = True
     if int(seats[0])!= 46:
         send = True
+    # -------------------------------------------------------------------------
+# =============================================================================
 
-    if send:
-        driver.get("https://accounts.google.com/signin/v2/identifier?service=mail&passive=true&rm=false&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin")
-        time.sleep(1)
-        driver.find_element_by_xpath("//input[@placeholder='Email or phone']").send_keys('nnchawla@go.olemiss.edu')
-        driver.find_element_by_xpath("//input[@value='Next']").click()
-        time.sleep(0.5)
-        driver.find_element_by_xpath("//input[@placeholder='Password']").send_keys('password')
-        driver.find_element_by_xpath("//input[@value='Sign in']").click()
-        time.sleep(0.5)
-        driver.find_element_by_xpath("//div[@gh='cm']").click()
-        time.sleep(1)
-        driver.find_element_by_tag_name('textarea').send_keys('nnchawla@go.olemiss.edu')
-        driver.find_element_by_xpath("//input[@name='subjectbox']").send_keys('CSCI 343 Seats: ' + seats[0] + ' at ' + time.asctime())
-        driver.find_element_by_xpath("//div[@class='T-I J-J5-Ji aoO T-I-atl L3']").click()
-        
+#(Deprecated) Gmail Message
+# =============================================================================
+#    if send:
+#        pass
+#         driver.get("https://accounts.google.com/signin/v2/identifier?service=mail&passive=true&rm=false&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin")
+#         time.sleep(1)
+#         driver.find_element_by_xpath("//input[@placeholder='Email or phone']").send_keys('nnchawla@go.olemiss.edu')
+#         driver.find_element_by_xpath("//input[@value='Next']").click()
+#         time.sleep(0.5)
+#         driver.find_element_by_xpath("//input[@placeholder='Password']").send_keys('password')
+#         driver.find_element_by_xpath("//input[@value='Sign in']").click()
+#         time.sleep(0.5)
+#         driver.find_element_by_xpath("//div[@gh='cm']").click()
+#         time.sleep(1)
+#         driver.find_element_by_tag_name('textarea').send_keys('nnchawla@go.olemiss.edu')
+#         driver.find_element_by_xpath("//input[@name='subjectbox']").send_keys('CSCI 343 Seats: ' + seats[0] + ' at ' + time.asctime())
+#         driver.find_element_by_xpath("//div[@class='T-I J-J5-Ji aoO T-I-atl L3']").click()
+# =============================================================================
+
+#Updating Capacities
+# =============================================================================
     time.sleep(1)
     driver.get_screenshot_as_file("capture1.png")
     driver.quit()
     time.sleep(1800)
+# =============================================================================
